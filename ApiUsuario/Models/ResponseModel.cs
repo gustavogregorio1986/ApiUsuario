@@ -6,6 +6,6 @@
 
         public string Mensagem { get; set; } = string.Empty;
 
-        public bool Status { get; set; } = true
+        public bool Status { get; set; } = true;
     }
 }
