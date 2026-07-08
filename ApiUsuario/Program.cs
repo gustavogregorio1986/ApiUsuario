@@ -1,4 +1,5 @@
 using ApiUsuario.Data;
+using ApiUsuario.Services.Senha;
 using ApiUsuario.Services.Usuario;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUsuarioInterface, UsuarioService>();
+builder.Services.AddScoped<ISenhaInterface, SenhaService>();
 
 var app = builder.Build();
 
