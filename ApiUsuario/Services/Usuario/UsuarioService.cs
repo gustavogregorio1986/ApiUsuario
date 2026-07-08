@@ -22,7 +22,7 @@ namespace ApiUsuario.Services.Usuario
 
             try
             {
-                if(!VerificaSeExisteEmailUsuario(usuarioCriacaoDto))
+                if (VerificaSeExisteEmailUsuario(usuarioCriacaoDto))
                 {
                     response.Mensagem = "Usuário/e-mail já cadastrado.";
                     response.Status = false;
@@ -58,14 +58,16 @@ namespace ApiUsuario.Services.Usuario
 
         private bool VerificaSeExisteEmailUsuario(UsuarioCriacaoDto usuarioCriacaoDto)
         {
-            var usuario = _context.Usuarios.FirstOrDefault(item => item.Email == usuarioCriacaoDto.Email || item.Usuario == usuarioCriacaoDto.Usuario);
+            var usuario = _context.Usuarios
+                .FirstOrDefault(item => item.Email == usuarioCriacaoDto.Email
+                                     || item.Usuario == usuarioCriacaoDto.Usuario);
 
-            if(usuario != null)
+            if (usuario != null)
             {
-                return true;
+                return true; // já existe
             }
 
-            return true;
+            return false; // não existe
         }
     }
 }

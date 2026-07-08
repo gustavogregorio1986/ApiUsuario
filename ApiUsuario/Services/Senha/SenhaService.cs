@@ -11,7 +11,7 @@ namespace ApiUsuario.Services.Senha
         {
             using (var hmac = new HMACSHA3_512())
             {
-                senhaHash = hmac.Key;
+                senhaSalt = hmac.Key;
                 senhaHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(senha));
             }
         }

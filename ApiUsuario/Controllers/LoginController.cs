@@ -1,4 +1,5 @@
 ﻿using ApiUsuario.DTO.Usuario;
+using ApiUsuario.Services.Usuario;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,10 +9,18 @@ namespace ApiUsuario.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        [HttpPost("register")]
-        public IActionResult RegistrarUsuario(UsuarioCriacaoDto usuario)
+        private readonly IUsuarioInterface usuarioInterfaces;
+
+        public LoginController(IUsuarioInterface  usuarioInterfaces)
         {
-            return Ok();
+            this.usuarioInterfaces = usuarioInterfaces;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> RegistrarUsuario(UsuarioCriacaoDto usuarioCriacaoDto)
+        {
+            var usuario = await usuarioInterfaces.RegistrarUsuario(usuarioCriacaoDto);  
+            return Ok(usuario);
         }
     }
 }
