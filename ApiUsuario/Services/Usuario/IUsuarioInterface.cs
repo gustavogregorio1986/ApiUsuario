@@ -7,5 +7,8 @@ namespace ApiUsuario.Services.Usuario
     {
         //retorno nome metodo
         Task<ResponseModel<UsuarioModel>> RegistrarUsuario(UsuarioCriacaoDto usuarioCriacaoDto);
+
+        Task<ResponseModel<List<UsuarioModel>>> ListarUsuarios();
+        Task<ResponseModel<UsuarioModel>> BuscarUsuarioPorId(int id);
     }
 }
