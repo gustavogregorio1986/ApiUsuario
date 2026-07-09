@@ -1,5 +1,8 @@
-﻿using ApiUsuario.Services.Usuario;
+﻿using ApiUsuario.DTO.Usuario;
+using ApiUsuario.Models;
+using ApiUsuario.Services.Usuario;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiUsuario.Controllers
@@ -26,6 +29,20 @@ namespace ApiUsuario.Controllers
         public async Task<IActionResult> BuscarUsuarioPorId(int id)
         {
             var usuario = await _usuarioInterface.BuscarUsuarioPorId(id);
+            return Ok(usuario);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> EditarUsuario(UsuarioEdicaoDto usuarioEdicaoDto)
+        {
+            var usuario = await _usuarioInterface.EditarUsuario(usuarioEdicaoDto);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> RemoverUsuario(int id)
+        {
+            var usuario = await _usuarioInterface.RemoverUsuario(id);
             return Ok(usuario);
         }
     }

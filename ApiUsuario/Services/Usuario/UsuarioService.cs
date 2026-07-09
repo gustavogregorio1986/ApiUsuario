@@ -41,6 +41,46 @@ namespace ApiUsuario.Services.Usuario
             }
         }
 
+        public async Task<ResponseModel<UsuarioModel>> EditarUsuario(UsuarioEdicaoDto usuarioEdicaoDto)
+        {
+            var response = new ResponseModel<UsuarioModel>();
+
+            try
+            {
+                // Buscar pelo Id do usuário
+                var usuarioBanco = await _context.Usuarios.FindAsync(usuarioEdicaoDto.Id);
+
+                if (usuarioBanco == null)
+                {
+                    response.Mensagem = "Usuário não localizado";
+                    response.Status = false;
+                    return response;
+                }
+
+                // Atualizar os campos
+                usuarioBanco.Nome = usuarioEdicaoDto.Nome;
+                usuarioBanco.Sobrenome = usuarioEdicaoDto.Sobrenome;
+                usuarioBanco.Email = usuarioEdicaoDto.Email;
+                usuarioBanco.Usuario = usuarioEdicaoDto.Usuario;
+                usuarioBanco.DataAlteracao = DateTime.Now; // melhor usar o momento atual
+
+                _context.Usuarios.Update(usuarioBanco);
+                await _context.SaveChangesAsync();
+
+                response.Mensagem = "Usuário editado com sucesso!";
+                response.Status = true;
+                response.Dados = usuarioBanco;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = "Erro ao editar usuário: " + ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+
         public async Task<ResponseModel<List<UsuarioModel>>> ListarUsuarios()
         {
             ResponseModel<List<UsuarioModel>> response = new ResponseModel<List<UsuarioModel>>();
@@ -95,6 +135,38 @@ namespace ApiUsuario.Services.Usuario
             catch (Exception ex)
             {
                 response.Mensagem = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+
+        public async Task<ResponseModel<UsuarioModel>> RemoverUsuario(int id)
+        {
+            var response = new ResponseModel<UsuarioModel>();
+
+            try
+            {
+                var usuario = await _context.Usuarios.FindAsync(id);
+
+                if (usuario == null)
+                {
+                    response.Mensagem = "Usuário não localizado";
+                    response.Status = false;
+                    return response;
+                }
+
+                _context.Usuarios.Remove(usuario);
+                await _context.SaveChangesAsync();
+
+                response.Dados = usuario;
+                response.Mensagem = "Usuário deletado com sucesso";
+                response.Status = true;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Mensagem = "Erro ao remover usuário: " + ex.Message;
                 response.Status = false;
                 return response;
             }
